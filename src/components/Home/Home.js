@@ -3,6 +3,7 @@ import EvaluationDashboard from "../EvaluationDashboard/EvaluationDashboard";
 import { useState } from "react";
 import LowerPanel from "../LowerPanel/LowerPanel";
 import ChoiceInput from "../ChoiceInput/ChoiceInput";
+import VerdictInput from "../VerdictInput/VerdictInput";
 
 function Home() {
   const [choices, setChoices] = useState([
@@ -18,10 +19,7 @@ function Home() {
     },
   ]);
   const [showChoiceInput, setShowChoiceInput] = useState(false);
-
-  const toggleShowInput = () => {
-    setShowChoiceInput(!showChoiceInput);
-  };
+  const [showVerdictInput, setShowVerdictInput] = useState(false);
 
   const onChoiceAdd = (name) => {
     setChoices(
@@ -36,7 +34,7 @@ function Home() {
         totalScore: 0,
       })
     );
-    toggleShowInput();
+    setShowChoiceInput(!showChoiceInput);
   };
 
   const handleResetAll = () => {
@@ -71,11 +69,18 @@ function Home() {
       {/* Lower Panel to Add, reset or see final result  */}
       {/* TODO: better approach for lowerPanel & choiceInput */}
       <LowerPanel
-        onAddNew={toggleShowInput}
+        onAddVerdict={() => setShowVerdictInput(!showVerdictInput)}
+        onAddChoice={() => setShowChoiceInput(!showChoiceInput)}
         onReset={handleResetAll}
         onResult={handleResult}
       />
       {showChoiceInput && <ChoiceInput onConfirmation={onChoiceAdd} />}
+      {showVerdictInput && (
+        <VerdictInput
+          choices={choices}
+          onAddVerdict={(newVerdict) => updateChoice(newVerdict)}
+        />
+      )}
     </div>
   );
 }

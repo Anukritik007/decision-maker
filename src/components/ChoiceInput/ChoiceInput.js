@@ -1,19 +1,15 @@
-import React from "react";
+import React, { useState } from "react";
 
 function ChoiceInput({ onConfirmation }) {
-  let choiceName = "";
+  const [choiceName, setChoiceName] = useState("");
 
   const onSubmit = (e) => {
     e.preventDefault(); //so it doesnt actually submit to a page
-    if (choiceName === "") {
-      alert("Please add choice name");
-      return;
-    }
     onConfirmation(choiceName);
   };
 
   const setName = (name) => {
-    choiceName = name;
+    setChoiceName(name);
   };
 
   return (
@@ -23,10 +19,17 @@ function ChoiceInput({ onConfirmation }) {
         <input
           className="form-control"
           placeholder="Join a startup..."
+          required
           type="text"
           onChange={(e) => setName(e.target.value)}
         />
-        <input type="submit" className="btn btn-primary" value="Save Choice" />
+
+        <input
+          type="submit"
+          className="btn btn-primary"
+          value="Save Choice"
+          disabled={choiceName === ""}
+        />
       </form>
     </div>
   );
